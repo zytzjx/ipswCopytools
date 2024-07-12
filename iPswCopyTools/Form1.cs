@@ -5,16 +5,20 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace iPswCopyTools
 {
     public partial class frmMain : Form
     {
+        Boolean bOverWrite = false;
         public frmMain()
         {
             InitializeComponent();
@@ -45,7 +49,7 @@ namespace iPswCopyTools
             foreach (var line in lines)
             {
                 if (String.IsNullOrEmpty(line)) continue;
-                Match m = regTitle.Match(line);
+                Match m = regTitle.Match(line.Trim());
                 if (m.Success)
                 {
                     if (String.Compare(m.Groups[1].Value, "iPhone", true) == 0)
@@ -67,7 +71,7 @@ namespace iPswCopyTools
                 {
                     if (newNode != null)
                     {
-                        Match itm = regData.Match(line);
+                        Match itm = regData.Match(line.Trim());
                         if (itm.Success)
                         {
                             IPSWInfo ipinfo = new IPSWInfo();
@@ -86,6 +90,8 @@ namespace iPswCopyTools
             }
         }
 
+        string oldFilename = "";
+
         private void button1_Click(object sender, EventArgs e)
         {
             //Open txt
@@ -95,6 +101,15 @@ namespace iPswCopyTools
             {
                 String sFileName = openDlgTxt.FileName;
                 tblIPSWInfo.Text = sFileName;
+                if (String.Compare(sFileName,oldFilename, true) != 0)
+                {
+                    treeView1.Nodes.Clear();
+                    oldFilename = sFileName;
+                }
+                else
+                {
+                    return;
+                }
                 CreateTreeView(sFileName);
             }
 
@@ -103,10 +118,14 @@ namespace iPswCopyTools
         private void button5_Click(object sender, EventArgs e)
         {
             FolderBrowserDialogNew dialog = new FolderBrowserDialogNew();
+            if (string.IsNullOrWhiteSpace(dialog.DirectoryPath))
+            {
+                dialog.DirectoryPath = @"\\10.1.1.27\Release\Apple_Files";
+            }
             if (dialog.ShowDialog(this) == DialogResult.OK)
             {
                 String spath = dialog.DirectoryPath;
-                switch (Convert.ToInt32((sender as Button).Tag))
+                switch (Convert.ToInt32((sender as System.Windows.Forms.Button).Tag))
                 {
                     case 1:
                         this.tbiPhoneIpsw.Text = spath;
@@ -158,48 +177,61 @@ namespace iPswCopyTools
         }
 
         private CountdownEvent _countdownEvent;
+        public EventWaitHandle Waithandle = new EventWaitHandle(false, EventResetMode.AutoReset);
 
         private void CopyFileTask(object obj)
         {
+            Waithandle.Reset(); 
             IPSWInfo info = (IPSWInfo)obj;
             info.COPY();
+            Waithandle.Set();
             _countdownEvent.Signal();
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-            _countdownEvent = new CountdownEvent(CheckSelect());
-            foreach (TreeNode myparentNode in treeView1.Nodes)
+            if (cpBackgroud.IsBusy)
             {
-                foreach (TreeNode myNode in myparentNode.Nodes)
-                {
-                    if (myNode.Checked)
-                    {
-                        IPSWInfo info = (IPSWInfo)myNode.Tag;
-                        info.LOTDMGFolder = tbApstDMG.Text;
-                        if (info.DevType == DEVICETYPE.iPhone)
-                        {
-                            info.DMGFolder = tbiPhonedmg.Text;
-                            info.IPSWFolder = tbiPhoneIpsw.Text;
-                        }
-                        else if (info.DevType == DEVICETYPE.iPad)
-                        {
-                            info.DMGFolder = tbiPadDmg.Text;
-                            info.IPSWFolder = tbiPadIpsw.Text;
-
-                        }
-                        else if (info.DevType == DEVICETYPE.iPod)
-                        {
-                            info.DMGFolder = tbiPodDmg.Text;
-                            info.IPSWFolder = tbiPodIpsw.Text;
-                        }
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(CopyFileTask), info);
-                    }
-                }
+                //MessageBox.Show("Changing File Format.", "Warning", MessageBoxButtons.OK);
+                tsInfo.Text = "Busying...";
+                return;
             }
 
-            _countdownEvent.Wait();
-            MessageBox.Show("Copy task finished", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            cpBackgroud.RunWorkerAsync();
+
+            //_countdownEvent = new CountdownEvent(CheckSelect());
+            //foreach (TreeNode myparentNode in treeView1.Nodes)
+            //{
+            //    foreach (TreeNode myNode in myparentNode.Nodes)
+            //    {
+            //        if (myNode.Checked)
+            //        {
+            //            IPSWInfo info = (IPSWInfo)myNode.Tag;
+            //            info.LOTDMGFolder = tbApstDMG.Text;
+            //            if (info.DevType == DEVICETYPE.iPhone)
+            //            {
+            //                info.DMGFolder = tbiPhonedmg.Text;
+            //                info.IPSWFolder = tbiPhoneIpsw.Text;
+            //            }
+            //            else if (info.DevType == DEVICETYPE.iPad)
+            //            {
+            //                info.DMGFolder = tbiPadDmg.Text;
+            //                info.IPSWFolder = tbiPadIpsw.Text;
+
+            //            }
+            //            else if (info.DevType == DEVICETYPE.iPod)
+            //            {
+            //                info.DMGFolder = tbiPodDmg.Text;
+            //                info.IPSWFolder = tbiPodIpsw.Text;
+            //            }
+            //            ThreadPool.QueueUserWorkItem(new WaitCallback(CopyFileTask), info);
+            //        }
+            //    }
+            //}
+
+            //_countdownEvent.Wait();
+            //MessageBox.Show("Copy task finished", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
         }
 
         private void button9_Click(object sender, EventArgs e)
@@ -322,6 +354,75 @@ namespace iPswCopyTools
             }
             if (currentNode.Nodes.Count > 0) return;
             UpdateParentCheckedState(currentNode);
+        }
+
+        private void cpBackgroud_DoWork(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker worker = sender as BackgroundWorker;
+            _countdownEvent = new CountdownEvent(CheckSelect());
+            int i = 1;
+            foreach (TreeNode myparentNode in treeView1.Nodes)
+            {
+                foreach (TreeNode myNode in myparentNode.Nodes)
+                {
+                    if (myNode.Checked)
+                    {
+                        IPSWInfo info = (IPSWInfo)myNode.Tag;
+                        info.LOTDMGFolder = tbApstDMG.Text;
+                        if (info.DevType == DEVICETYPE.iPhone)
+                        {
+                            info.DMGFolder = tbiPhonedmg.Text;
+                            info.IPSWFolder = tbiPhoneIpsw.Text;
+                        }
+                        else if (info.DevType == DEVICETYPE.iPad)
+                        {
+                            info.DMGFolder = tbiPadDmg.Text;
+                            info.IPSWFolder = tbiPadIpsw.Text;
+
+                        }
+                        else if (info.DevType == DEVICETYPE.iPod)
+                        {
+                            info.DMGFolder = tbiPodDmg.Text;
+                            info.IPSWFolder = tbiPodIpsw.Text;
+                        }
+                        info.IsOverwrite = bOverWrite;
+                        ThreadPool.QueueUserWorkItem(new WaitCallback(CopyFileTask), info);
+                        //CopyFileTask(info);
+                        //tsInfo.Text = info.CopyInfo;
+
+                        Thread.Sleep(1000);
+                        while (!Waithandle.WaitOne(1000)){
+                            statusStrip1.Invoke(new Action(() => tsInfo.Text = info.CopyInfo));
+                        }
+                        treeView1.Invoke(new Action(() => myNode.BackColor = info.Error ==0 ? Color.Green:Color.Red));
+                        worker.ReportProgress(i++);
+                    }
+                }
+            }
+
+            _countdownEvent.Wait();
+            //worker.ReportProgress(i++);
+        }
+
+        private void cpBackgroud_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            if (e.ProgressPercentage >= tsProgressbar.Maximum)
+            {
+                tsProgressbar.Maximum += 10;
+            }
+            tsProgressbar.Value = e.ProgressPercentage;
+        }
+
+        private void cpBackgroud_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            tsInfo.Text = "Done";
+            tsProgressbar.Value = tsProgressbar.Maximum;
+            MessageBox.Show("Copy task finished", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void cbOverwrite_CheckStateChanged(object sender, EventArgs e)
+        {
+            bOverWrite = ((CheckBox)sender).Checked;
         }
     }
 }

@@ -20,6 +20,9 @@ namespace iPswCopyTools
         private string _srcDmgFolder;
         private string _srcIPSWFolder;
         private string _srcAPSTDMGFolder;
+        private Boolean _isoverwrite;
+        private string _cpinfo;
+        private int error;
 
         public String DeviceName;
         public List<String> Dmgs
@@ -27,7 +30,7 @@ namespace iPswCopyTools
             get { return _Dmgs; }
         }
         public String IPSWFileName;
-        public DEVICETYPE DevType=DEVICETYPE.iPhone;
+        public DEVICETYPE DevType = DEVICETYPE.iPhone;
 
         public String DMGFolder
         {
@@ -42,8 +45,19 @@ namespace iPswCopyTools
             set { _srcAPSTDMGFolder = value; }
         }
 
-        
+        public Boolean IsOverwrite{
+            set { _isoverwrite = value; }
+        }
 
+        public String CopyInfo
+        {
+            get { return _cpinfo; }
+        }
+
+        public int Error
+        {
+            get { return error; }
+        }
         public void SetDMGS(String s)
         {
             _Dmgs.Clear();
@@ -58,17 +72,25 @@ namespace iPswCopyTools
         {
             if (string.IsNullOrEmpty(srcDmgfolder) || string.IsNullOrEmpty(srcIpswFolder) || string.IsNullOrEmpty(dstFolder))
             {
+                error = 3;
                 System.Diagnostics.Trace.WriteLine($"DMG={srcDmgfolder} or IPSW={srcIpswFolder} or target={dstFolder}");
                 return;
             }
             System.Diagnostics.Trace.WriteLine($"Copy File From {Path.Combine(srcIpswFolder, IPSWFileName)} to {Path.Combine(dstFolder, IPSWFileName)}");
             try
             {
-                File.Copy(Path.Combine(srcIpswFolder, IPSWFileName), Path.Combine(dstFolder, IPSWFileName), true);
+                _cpinfo = $"copying {IPSWFileName}";
+                if (_isoverwrite || !File.Exists(Path.Combine(dstFolder, IPSWFileName)))
+                {
+                    File.Copy(Path.Combine(srcIpswFolder, IPSWFileName), Path.Combine(dstFolder, IPSWFileName), true);
+                }
                 System.Diagnostics.Trace.WriteLine($"Copy ipsw Success { IPSWFileName}");
+
             }
             catch
             {
+                error = 2;
+                _cpinfo = $"failed: {IPSWFileName}";
                 System.Diagnostics.Trace.WriteLine($"Copy ipsw Failed { IPSWFileName}");
                 if (File.Exists(Path.Combine(dstFolder, IPSWFileName)))
                 {
@@ -87,12 +109,18 @@ namespace iPswCopyTools
                 System.Diagnostics.Trace.WriteLine($"Copy File From {Path.Combine(srcDmgfolder, it)} to {Path.Combine(dstFolder, it)}");
                 try
                 {
-                    File.Copy(Path.Combine(srcDmgfolder, it), Path.Combine(dstFolder, it), true);
-                    System.Diagnostics.Trace.WriteLine($"Copy DMG Success { it}");
+                    _cpinfo = $"copying {it}";
+                    if (_isoverwrite || !File.Exists(Path.Combine(dstFolder, it)))
+                    {
+                        File.Copy(Path.Combine(srcDmgfolder, it), Path.Combine(dstFolder, it), true);
+                    }
+                    System.Diagnostics.Trace.WriteLine($"Copy DMG Success {it}");
                 }
                 catch
                 {
-                    System.Diagnostics.Trace.WriteLine($"Copy DMG failed { it}");
+                    error = 1;
+                    _cpinfo = $"failed: {it}";
+                    System.Diagnostics.Trace.WriteLine($"Copy DMG failed {it}");
                     if (File.Exists(Path.Combine(dstFolder, it)))
                     {
                         try
@@ -111,6 +139,7 @@ namespace iPswCopyTools
 
         public void COPY()
         {
+            error = 0;
             CopyFiles(_srcDmgFolder, _srcIPSWFolder, _srcAPSTDMGFolder);
         }
 

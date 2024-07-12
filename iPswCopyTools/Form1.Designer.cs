@@ -32,38 +32,44 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
-            this.label1 = new System.Windows.Forms.Label();
-            this.tblIPSWInfo = new System.Windows.Forms.TextBox();
-            this.tbiPhoneIpsw = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.tbiPhonedmg = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.tbiPadIpsw = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.tbiPadDmg = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.openDlgTxt = new System.Windows.Forms.OpenFileDialog();
+            this.button10 = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
+            this.tbApstDMG = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.button7 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.tbiPodDmg = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tbiPodIpsw = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.tbApstDMG = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.button9 = new System.Windows.Forms.Button();
-            this.button10 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.tbiPadDmg = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.tbiPadIpsw = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.tbiPhonedmg = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.tbiPhoneIpsw = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.tblIPSWInfo = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.openDlgTxt = new System.Windows.Forms.OpenFileDialog();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
+            this.cpBackgroud = new System.ComponentModel.BackgroundWorker();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.tsInfo = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsProgressbar = new System.Windows.Forms.ToolStripProgressBar();
+            this.cbOverwrite = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -78,6 +84,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.cbOverwrite);
             this.splitContainer1.Panel2.Controls.Add(this.button10);
             this.splitContainer1.Panel2.Controls.Add(this.button9);
             this.splitContainer1.Panel2.Controls.Add(this.tbApstDMG);
@@ -119,159 +126,41 @@
             this.treeView1.TabIndex = 1;
             this.treeView1.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCheck);
             // 
-            // label1
+            // button10
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(47, 26);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(74, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "IPSW Info Txt";
+            this.button10.Location = new System.Drawing.Point(347, 527);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(128, 126);
+            this.button10.TabIndex = 25;
+            this.button10.Text = "Delete DMG";
+            this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
-            // tblIPSWInfo
+            // button9
             // 
-            this.tblIPSWInfo.Location = new System.Drawing.Point(91, 42);
-            this.tblIPSWInfo.Name = "tblIPSWInfo";
-            this.tblIPSWInfo.ReadOnly = true;
-            this.tblIPSWInfo.Size = new System.Drawing.Size(666, 20);
-            this.tblIPSWInfo.TabIndex = 1;
+            this.button9.Location = new System.Drawing.Point(201, 527);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(128, 126);
+            this.button9.TabIndex = 24;
+            this.button9.Text = "Check DMG Folder";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
-            // tbiPhoneIpsw
+            // tbApstDMG
             // 
-            this.tbiPhoneIpsw.Location = new System.Drawing.Point(91, 94);
-            this.tbiPhoneIpsw.Name = "tbiPhoneIpsw";
-            this.tbiPhoneIpsw.ReadOnly = true;
-            this.tbiPhoneIpsw.Size = new System.Drawing.Size(666, 20);
-            this.tbiPhoneIpsw.TabIndex = 3;
+            this.tbApstDMG.Location = new System.Drawing.Point(84, 450);
+            this.tbApstDMG.Name = "tbApstDMG";
+            this.tbApstDMG.Size = new System.Drawing.Size(666, 20);
+            this.tbApstDMG.TabIndex = 23;
             // 
-            // label2
+            // label8
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(47, 78);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(106, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "iPhone IPSW Folder:";
-            // 
-            // tbiPhonedmg
-            // 
-            this.tbiPhonedmg.Location = new System.Drawing.Point(91, 138);
-            this.tbiPhonedmg.Name = "tbiPhonedmg";
-            this.tbiPhonedmg.ReadOnly = true;
-            this.tbiPhonedmg.Size = new System.Drawing.Size(666, 20);
-            this.tbiPhonedmg.TabIndex = 5;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(47, 122);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(103, 13);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "iPhone DMG Folder:";
-            // 
-            // tbiPadIpsw
-            // 
-            this.tbiPadIpsw.Location = new System.Drawing.Point(91, 208);
-            this.tbiPadIpsw.Name = "tbiPadIpsw";
-            this.tbiPadIpsw.ReadOnly = true;
-            this.tbiPadIpsw.Size = new System.Drawing.Size(666, 20);
-            this.tbiPadIpsw.TabIndex = 7;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(47, 192);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(94, 13);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "iPad IPSW Folder:";
-            // 
-            // tbiPadDmg
-            // 
-            this.tbiPadDmg.Location = new System.Drawing.Point(91, 252);
-            this.tbiPadDmg.Name = "tbiPadDmg";
-            this.tbiPadDmg.ReadOnly = true;
-            this.tbiPadDmg.Size = new System.Drawing.Size(666, 20);
-            this.tbiPadDmg.TabIndex = 9;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(47, 236);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(88, 13);
-            this.label5.TabIndex = 8;
-            this.label5.Text = "iPad DMG Folder";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(731, 42);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(26, 23);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "...";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(731, 249);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(26, 23);
-            this.button2.TabIndex = 11;
-            this.button2.Tag = "4";
-            this.button2.Text = "...";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button5_Click);
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(731, 208);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(26, 23);
-            this.button3.TabIndex = 12;
-            this.button3.Tag = "3";
-            this.button3.Text = "...";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button5_Click);
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(731, 138);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(26, 23);
-            this.button4.TabIndex = 13;
-            this.button4.Tag = "2";
-            this.button4.Text = "...";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button5_Click);
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(731, 91);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(26, 23);
-            this.button5.TabIndex = 14;
-            this.button5.Tag = "1";
-            this.button5.Text = "...";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
-            // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(50, 527);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(128, 126);
-            this.button6.TabIndex = 15;
-            this.button6.Text = "COPY";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
-            // openDlgTxt
-            // 
-            this.openDlgTxt.Filter = "Text files (*.txt)|*.txt";
-            this.openDlgTxt.ShowReadOnly = true;
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(40, 434);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(91, 13);
+            this.label8.TabIndex = 22;
+            this.label8.Text = "LOT DMG Folder:";
             // 
             // button7
             // 
@@ -329,41 +218,160 @@
             this.label7.TabIndex = 16;
             this.label7.Text = "iPod IPSW Folder:";
             // 
-            // tbApstDMG
+            // button6
             // 
-            this.tbApstDMG.Location = new System.Drawing.Point(84, 450);
-            this.tbApstDMG.Name = "tbApstDMG";
-            this.tbApstDMG.Size = new System.Drawing.Size(666, 20);
-            this.tbApstDMG.TabIndex = 23;
+            this.button6.Location = new System.Drawing.Point(50, 527);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(128, 126);
+            this.button6.TabIndex = 15;
+            this.button6.Text = "COPY";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
-            // label8
+            // button5
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(40, 434);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(91, 13);
-            this.label8.TabIndex = 22;
-            this.label8.Text = "LOT DMG Folder:";
+            this.button5.Location = new System.Drawing.Point(731, 91);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(26, 23);
+            this.button5.TabIndex = 14;
+            this.button5.Tag = "1";
+            this.button5.Text = "...";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
-            // button9
+            // button4
             // 
-            this.button9.Location = new System.Drawing.Point(201, 527);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(128, 126);
-            this.button9.TabIndex = 24;
-            this.button9.Text = "Check DMG Folder";
-            this.button9.UseVisualStyleBackColor = true;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
+            this.button4.Location = new System.Drawing.Point(731, 138);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(26, 23);
+            this.button4.TabIndex = 13;
+            this.button4.Tag = "2";
+            this.button4.Text = "...";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button5_Click);
             // 
-            // button10
+            // button3
             // 
-            this.button10.Location = new System.Drawing.Point(347, 527);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(128, 126);
-            this.button10.TabIndex = 25;
-            this.button10.Text = "Delete DMG";
-            this.button10.UseVisualStyleBackColor = true;
-            this.button10.Click += new System.EventHandler(this.button10_Click);
+            this.button3.Location = new System.Drawing.Point(731, 208);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(26, 23);
+            this.button3.TabIndex = 12;
+            this.button3.Tag = "3";
+            this.button3.Text = "...";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(731, 249);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(26, 23);
+            this.button2.TabIndex = 11;
+            this.button2.Tag = "4";
+            this.button2.Text = "...";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(731, 42);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(26, 23);
+            this.button1.TabIndex = 10;
+            this.button1.Text = "...";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // tbiPadDmg
+            // 
+            this.tbiPadDmg.Location = new System.Drawing.Point(91, 252);
+            this.tbiPadDmg.Name = "tbiPadDmg";
+            this.tbiPadDmg.ReadOnly = true;
+            this.tbiPadDmg.Size = new System.Drawing.Size(666, 20);
+            this.tbiPadDmg.TabIndex = 9;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(47, 236);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(88, 13);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "iPad DMG Folder";
+            // 
+            // tbiPadIpsw
+            // 
+            this.tbiPadIpsw.Location = new System.Drawing.Point(91, 208);
+            this.tbiPadIpsw.Name = "tbiPadIpsw";
+            this.tbiPadIpsw.ReadOnly = true;
+            this.tbiPadIpsw.Size = new System.Drawing.Size(666, 20);
+            this.tbiPadIpsw.TabIndex = 7;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(47, 192);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(94, 13);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "iPad IPSW Folder:";
+            // 
+            // tbiPhonedmg
+            // 
+            this.tbiPhonedmg.Location = new System.Drawing.Point(91, 138);
+            this.tbiPhonedmg.Name = "tbiPhonedmg";
+            this.tbiPhonedmg.ReadOnly = true;
+            this.tbiPhonedmg.Size = new System.Drawing.Size(666, 20);
+            this.tbiPhonedmg.TabIndex = 5;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(47, 122);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(103, 13);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "iPhone DMG Folder:";
+            // 
+            // tbiPhoneIpsw
+            // 
+            this.tbiPhoneIpsw.Location = new System.Drawing.Point(91, 94);
+            this.tbiPhoneIpsw.Name = "tbiPhoneIpsw";
+            this.tbiPhoneIpsw.ReadOnly = true;
+            this.tbiPhoneIpsw.Size = new System.Drawing.Size(666, 20);
+            this.tbiPhoneIpsw.TabIndex = 3;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(47, 78);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(106, 13);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "iPhone IPSW Folder:";
+            // 
+            // tblIPSWInfo
+            // 
+            this.tblIPSWInfo.Location = new System.Drawing.Point(91, 42);
+            this.tblIPSWInfo.Name = "tblIPSWInfo";
+            this.tblIPSWInfo.ReadOnly = true;
+            this.tblIPSWInfo.Size = new System.Drawing.Size(666, 20);
+            this.tblIPSWInfo.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(47, 26);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(74, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "IPSW Info Txt";
+            // 
+            // openDlgTxt
+            // 
+            this.openDlgTxt.Filter = "Text files (*.txt)|*.txt";
+            this.openDlgTxt.InitialDirectory = "\\\\10.1.1.27\\Release\\Apple_Files";
+            this.openDlgTxt.ShowReadOnly = true;
             // 
             // imageList
             // 
@@ -373,11 +381,53 @@
             this.imageList.Images.SetKeyName(1, "iphone.ico");
             this.imageList.Images.SetKeyName(2, "ipod.ico");
             // 
+            // cpBackgroud
+            // 
+            this.cpBackgroud.WorkerReportsProgress = true;
+            this.cpBackgroud.DoWork += new System.ComponentModel.DoWorkEventHandler(this.cpBackgroud_DoWork);
+            this.cpBackgroud.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.cpBackgroud_ProgressChanged);
+            this.cpBackgroud.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.cpBackgroud_RunWorkerCompleted);
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsInfo,
+            this.tsProgressbar});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 658);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1412, 22);
+            this.statusStrip1.TabIndex = 2;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // tsInfo
+            // 
+            this.tsInfo.Name = "tsInfo";
+            this.tsInfo.Size = new System.Drawing.Size(38, 17);
+            this.tsInfo.Text = "status";
+            // 
+            // tsProgressbar
+            // 
+            this.tsProgressbar.AutoSize = false;
+            this.tsProgressbar.Name = "tsProgressbar";
+            this.tsProgressbar.Size = new System.Drawing.Size(300, 16);
+            // 
+            // cbOverwrite
+            // 
+            this.cbOverwrite.AutoSize = true;
+            this.cbOverwrite.Location = new System.Drawing.Point(50, 488);
+            this.cbOverwrite.Name = "cbOverwrite";
+            this.cbOverwrite.Size = new System.Drawing.Size(140, 17);
+            this.cbOverwrite.TabIndex = 26;
+            this.cbOverwrite.Text = "Overwrite when file exist";
+            this.cbOverwrite.UseVisualStyleBackColor = true;
+            this.cbOverwrite.CheckStateChanged += new System.EventHandler(this.cbOverwrite_CheckStateChanged);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1412, 680);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.splitContainer1);
             this.Name = "frmMain";
             this.Text = "DMG Copy Tools";
@@ -386,7 +436,10 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -422,6 +475,11 @@
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.ImageList imageList;
+        private System.ComponentModel.BackgroundWorker cpBackgroud;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel tsInfo;
+        private System.Windows.Forms.ToolStripProgressBar tsProgressbar;
+        private System.Windows.Forms.CheckBox cbOverwrite;
     }
 }
 
